@@ -57,7 +57,7 @@ class AdminDashboard extends Component
         $this->departments = Department::select('id', 'name')->get();
 
         $this->events = Event::with(['department', 'location'])
-            ->where('status', '!=', 1)
+            ->where('status', 1)
             ->orderBy('date', 'asc')
             ->take(10)
             ->get();
@@ -77,7 +77,7 @@ class AdminDashboard extends Component
             $event->status = 0; // cancel
             $event->save();
         }
-
+        $this->loadData();
         $this->dispatch('show-toast', message: 'Event berjaya dibatalkan.', type: 'success');
     }
 

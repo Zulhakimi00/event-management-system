@@ -102,6 +102,9 @@
                     <i class="fas fa-cog text-lg"></i>
                     <span class="sidebar-text font-medium">Admin Panel</span>
                 </a>
+            @endrole
+
+            @role('it admin')
                 <a href="{{ route('user-management') }}"
                     class="nav-btn w-full flex items-center space-x-4 p-4 rounded-xl hover:bg-gray-700 transition-all">
                     <i class="fas fa-users text-lg"></i>
@@ -111,14 +114,6 @@
                     class="nav-btn w-full flex items-center space-x-4 p-4 rounded-xl hover:bg-gray-700 transition-all">
                     <i class="fas fa-calendar-alt text-lg"></i>
                     <span class="sidebar-text font-medium ml-3">Event Management</span>
-                </a>
-            @endrole
-
-            @role('it admin')
-                <a href="{{ route('admin-dashboard') }}"
-                    class="nav-btn w-full flex items-center space-x-4 p-4 rounded-xl hover:bg-gray-700 transition-all">
-                    <i class="fas fa-cog text-lg"></i>
-                    <span class="sidebar-text font-medium">Admin Panel</span>
                 </a>
             @endrole
 
