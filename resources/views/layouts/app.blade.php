@@ -76,35 +76,49 @@
                 <span class="sidebar-text font-medium">Dashboard</span>
             </a>
 
-            {{-- <a href="{{ route('calendar') }}"
+            <a href="{{ route('calendar') }}"
                 class="nav-btn w-full flex items-center space-x-4 p-4 rounded-xl hover:bg-gray-700 transition-all">
                 <i class="fas fa-calendar text-lg"></i>
                 <span class="sidebar-text font-medium">Calendar</span>
-            </a> --}}
+            </a>
 
             <a href="{{ route('booking') }}"
                 class="nav-btn w-full flex items-center space-x-4 p-4 rounded-xl hover:bg-gray-700 transition-all">
                 <i class="fas fa-book text-lg"></i>
                 <span class="sidebar-text font-medium">Booking</span>
-            </a> <a href="{{ route('create-booking') }}"
-                class="nav-btn w-full flex items-center space-x-4 p-4 rounded-xl hover:bg-gray-700 transition-all">
-                <i class="fas fa-plus text-lg"></i>
-                <span class="sidebar-text font-medium">Create Booking</span>
             </a>
+            @role('staff')
+                <a href="{{ route('create-booking') }}"
+                    class="nav-btn w-full flex items-center space-x-4 p-4 rounded-xl hover:bg-gray-700 transition-all">
+                    <i class="fas fa-plus text-lg"></i>
+                    <span class="sidebar-text font-medium">Create Booking</span>
+                </a>
+            @endrole
 
 
-
-            {{-- <a href="{{ route('admin') }}"
+            @role('admin')
+                <a href="{{ route('admin-dashboard') }}"
                     class="nav-btn w-full flex items-center space-x-4 p-4 rounded-xl hover:bg-gray-700 transition-all">
                     <i class="fas fa-cog text-lg"></i>
                     <span class="sidebar-text font-medium">Admin Panel</span>
-                </a> --}}
-
-            @role('it admin')
+                </a>
                 <a href="{{ route('user-management') }}"
                     class="nav-btn w-full flex items-center space-x-4 p-4 rounded-xl hover:bg-gray-700 transition-all">
                     <i class="fas fa-users text-lg"></i>
                     <span class="sidebar-text font-medium">User Management</span>
+                </a>
+                <a href="{{ route('event-management') }}"
+                    class="nav-btn w-full flex items-center space-x-4 p-4 rounded-xl hover:bg-gray-700 transition-all">
+                    <i class="fas fa-calendar-alt text-lg"></i>
+                    <span class="sidebar-text font-medium ml-3">Event Management</span>
+                </a>
+            @endrole
+
+            @role('it admin')
+                <a href="{{ route('admin-dashboard') }}"
+                    class="nav-btn w-full flex items-center space-x-4 p-4 rounded-xl hover:bg-gray-700 transition-all">
+                    <i class="fas fa-cog text-lg"></i>
+                    <span class="sidebar-text font-medium">Admin Panel</span>
                 </a>
             @endrole
 

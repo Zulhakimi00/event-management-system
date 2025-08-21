@@ -60,8 +60,26 @@
 
     <div class="space-y-6">
         @foreach ($mealOrders as $order)
-            <div
-                class="p-6 bg-{{ $order->status == 1 ? 'green' : 'yellow' }}-50 rounded-xl border-l-4 border-{{ $order->status == 1 ? 'green' : 'yellow' }}-500">
+            @php
+                $statusColors = [
+                    1 => ['bg' => 'green-50', 'border' => 'green-500'],
+                    0 => ['bg' => 'yellow-50', 'border' => 'yellow-500'],
+                    2 => ['bg' => 'red-50', 'border' => 'red-500'],
+                ];
+                $statusBadge = [
+                    1 => ['bg' => 'green-100', 'text' => 'green-800', 'label' => 'Approve'],
+                    0 => ['bg' => 'yellow-100', 'text' => 'yellow-800', 'label' => 'Pending'],
+                    2 => ['bg' => 'red-100', 'text' => 'red-800', 'label' => 'Cancel'],
+                ];
+
+                $color = $statusColors[$order->status] ?? ['bg' => 'gray-50', 'border' => 'gray-500'];
+                $badge = $statusBadge[$order->status] ?? [
+                    'bg' => 'gray-100',
+                    'text' => 'gray-800',
+                    'label' => 'Unknown',
+                ];
+            @endphp
+            <div class="p-6 bg-{{ $color['bg'] }} rounded-xl border-l-4 border-{{ $color['border'] }}">
                 <div class="flex justify-between items-start">
                     <div class="flex-1">
                         <h3 class="text-lg font-bold text-gray-900">{{ $order->event->name }}</h3>
@@ -76,7 +94,7 @@
                                 <p class="text-gray-600"><strong>🍴 Serving:</strong>
                                     {{ $order->servingMethod->name ?? '-' }}</p>
                                 <p class="text-gray-600"><strong>📅 Event Date:</strong>
-                                    {{ \Carbon\Carbon::parse($order->event->start_date_time)->format('d/m/Y') }}</p>
+                                    {{ \Carbon\Carbon::parse($order->event->date)->format('d/m/Y') }}</p>
                                 @if ($order->specialGuest)
                                     <p class="text-purple-600"><strong>👑 Special Guests:</strong>
                                         {{ $order->specialGuest->name }}</p>
@@ -103,10 +121,8 @@
 
                     <div class="text-right ml-4">
                         <span
-                            class="bg-{{ $order->status == 1 ? 'green' : 'yellow' }}-100 
-                    text-{{ $order->status == 1 ? 'green' : 'yellow' }}-800 
-                    px-3 py-1 rounded-full text-sm font-medium">
-                            {{ ucfirst($order->status == 1 ? 'Approve' : 'Pending') }}
+                            class="bg-{{ $badge['bg'] }} text-{{ $badge['text'] }} px-3 py-1 rounded-full text-sm font-medium">
+                            {{ ucfirst($badge['label']) }}
                         </span>
                         <div class="flex flex-col gap-2 mt-2">
                             <div class="flex flex-col gap-2 mt-2">
@@ -275,16 +291,25 @@
                     <div class="bg-gray-50 p-4 rounded-lg">
                         <h3 class="font-bold mb-2">Schedule & Venue</h3>
                         <p><strong>Date:</strong>
-                            {{ \Carbon\Carbon::parse($selectedOrder->event->start_date_time)->format('d/m/Y') }}</p>
+                            {{ \Carbon\Carbon::parse($selectedOrder->event->date)->format('d/m/Y') }}</p>
                         <p><strong>Start:</strong>
-                            {{ \Carbon\Carbon::parse($selectedOrder->event->start_date_time)->format('H:i') }}</p>
+                            {{ \Carbon\Carbon::parse($selectedOrder->event->start_time)->format('H:i') }}</p>
                         <p><strong>End:</strong>
-                            {{ \Carbon\Carbon::parse($selectedOrder->event->end_date_time)->format('H:i') }}</p>
+                            {{ \Carbon\Carbon::parse($selectedOrder->event->end_time)->format('H:i') }}</p>
 
                         <p><strong>Venue:</strong> {{ $selectedOrder->event->location->name }}</p>
                     </div>
                 </div>
-
+                @if ($selectedOrder)
+                    <div class="bg-blue-50 p-4 mt-4 rounded-lg border border-blue-200">
+                        <h3 class="font-bold text-blue-900 mb-2">🍴 Meal Information</h3>
+                        <p><strong>Total Attendees:</strong> {{ $selectedOrder->total_pax ?? '-' }}</p>
+                        <p><strong>Vegetarian Meals:</strong> {{ $selectedOrder->total_vegetarian_meal ?? '0' }}
+                        </p>
+                        <p><strong>Serving Method:</strong> {{ $selectedOrder->servingMethod->name ?? '-' }}</p>
+                        <p><strong>Special Guests:</strong> {{ $selectedOrder->specialGuest->name ?? '-' }}</p>
+                    </div>
+                @endif
                 @if ($selectedOrder->event->equipment && count($selectedOrder->event->equipment) > 0)
                     <div class="bg-cyan-50 p-4 mt-4 rounded-lg border border-cyan-200">
                         <h3 class="font-bold text-cyan-900 mb-2">IT Equipment Required</h3>

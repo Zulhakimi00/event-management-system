@@ -48,11 +48,9 @@
                             <select wire:model="function_type"
                                 class="w-full p-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                                 <option value="">Select Function</option>
-                                <option value="meeting">Meeting</option>
-                                <option value="conference">Conference</option>
-                                <option value="workshop">Workshop</option>
-                                <option value="training">Training</option>
-                                <option value="seminar">Seminar</option>
+                                @foreach ($allEventType as $event_type)
+                                    <option value="{{ $event_type->id }}">{{ $event_type->name }}</option>
+                                @endforeach
                             </select>
                             @error('function_type')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
@@ -77,22 +75,47 @@
                         <i class="fas fa-clock text-purple-600 mr-2"></i>Schedule & Venue
                     </h3>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {{-- Pilih Tarikh --}}
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Start Date & Time *</label>
-                            <input type="datetime-local" wire:model="start_date_time"
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Date *</label>
+                            <input type="date" wire:model="date"
                                 class="w-full p-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent">
-                            @error('start_date_time')
+                            @error('date')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
+
+                        {{-- Masa Mula --}}
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">End Date & Time *</label>
-                            <input type="datetime-local" wire:model="end_date_time"
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Start Time *</label>
+                            <select wire:model="start_time"
                                 class="w-full p-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent">
-                            @error('end_date_time')
+                                <option value="">Select Start Time</option>
+                                @foreach ($timeSlots as $time)
+                                    <option value="{{ $time }}">{{ $time }}</option>
+                                @endforeach
+                            </select>
+                            @error('start_time')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
+
+                        {{-- Masa Tamat --}}
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">End Time *</label>
+                            <select wire:model="end_time"
+                                class="w-full p-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                <option value="">Select End Time</option>
+                                @foreach ($timeSlots as $time)
+                                    <option value="{{ $time }}">{{ $time }}</option>
+                                @endforeach
+                            </select>
+                            @error('end_time')
+                                <span class="text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        {{-- Venue --}}
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-2">Venue *</label>
                             <select wire:model="location_id"
@@ -108,7 +131,6 @@
                         </div>
                     </div>
                 </div>
-
                 <!-- IT Equipment -->
                 <div class="bg-cyan-50 rounded-xl p-6 border border-cyan-200">
                     <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
@@ -137,8 +159,11 @@
                             <input type="checkbox" wire:model.live="require_meals" class="mr-2">
                             <span class="font-medium">This event requires meals</span>
                         </label>
-                    </div>
 
+                    </div>
+                    @error('require_meals')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
                     @if ($require_meals)
                         <div class="space-y-6">
                             <div>

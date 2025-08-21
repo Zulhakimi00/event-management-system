@@ -137,24 +137,36 @@ class MealOrdersManagement extends Component
 
         $query = EventMeal::with(['event', 'details.mealSession', 'specialGuest', 'servingMethod']);
 
-        if ($this->filter == 'reminders') {
-            $query->whereHas('event', function ($q) {
-                $q->where('start_date_time', '<=', Carbon::now()->addDays(2));
-            });
-        } elseif ($this->filter == '3days') {
-            $query->whereHas('event', function ($q) {
-                $q->whereBetween('start_date_time', [Carbon::now(), Carbon::now()->addDays(3)]);
-            });
-        } elseif ($this->filter == 'week') {
-            $query->whereHas('event', function ($q) {
-                $q->whereBetween('start_date_time', [Carbon::now(), Carbon::now()->endOfWeek()]);
-            });
-        } elseif ($this->filter == 'month') {
-            $query->whereHas('event', function ($q) {
-                $q->whereMonth('start_date_time', Carbon::now()->month);
-            });
-        }
+        $now = Carbon::now();
 
+        $filters = [
+            'reminders' => function ($q) use ($now) {
+                $q->whereDate('date', '<=', $now->copy()->addDays(2)->toDateString());
+            },
+
+            '3days' => function ($q) use ($now) {
+                $q->whereBetween('date', [
+                    $now->toDateString(),
+                    $now->copy()->addDays(3)->toDateString(),
+                ]);
+            },
+
+            'week' => function ($q) use ($now) {
+                $q->whereBetween('date', [
+                    $now->toDateString(),
+                    $now->copy()->endOfWeek()->toDateString(),
+                ]);
+            },
+
+            'month' => function ($q) use ($now) {
+                $q->whereMonth('date', $now->month)
+                    ->whereYear('date', $now->year);
+            },
+        ];
+
+        if (isset($filters[$this->filter])) {
+            $query->whereHas('event', $filters[$this->filter]);
+        }
         $this->mealOrders = $query->get();
     }
 
@@ -170,7 +182,7 @@ class MealOrdersManagement extends Component
 
     public function cancel($id)
     {
-        EventMeal::where('id', $id)->update(['status' => 0]);
+        EventMeal::where('id', $id)->update(['status' => 2]);
 
         $this->loadMealOrders();
         session()->flash('success', 'Order cancelled!');
@@ -189,7 +201,7 @@ class MealOrdersManagement extends Component
     {
         // Count quick stats
         $remindersCount = EventMealDetail::whereHas('eventMeal.event', function ($q) {
-            $q->where('start_date_time', '<=', Carbon::now()->addDays(2));
+            $q->whereDate('date', '<=', Carbon::now()->addDays(2));
         })->count();
 
         $pendingCount = $this->mealOrders->where('status', 0)->count();

@@ -91,9 +91,9 @@
     <div class="section">
         <div class="section-title">⏰ Schedule & Venue</div>
         <div class="gray-box">
-            <p><strong>Date:</strong> {{ \Carbon\Carbon::parse($order->event->start_date_time)->format('d/m/Y') }}</p>
-            <p><strong>Start:</strong> {{ \Carbon\Carbon::parse($order->event->start_date_time)->format('H:i') }}</p>
-            <p><strong>End:</strong> {{ \Carbon\Carbon::parse($order->event->end_date_time)->format('H:i') }}</p>
+            <p><strong>Date:</strong> {{ \Carbon\Carbon::parse($order->event->date)->format('d/m/Y') }}</p>
+            <p><strong>Start:</strong> {{ \Carbon\Carbon::parse($order->event->start_time)->format('H:i') }}</p>
+            <p><strong>End:</strong> {{ \Carbon\Carbon::parse($order->event->end_time)->format('H:i') }}</p>
             <p><strong>Venue:</strong> {{ $order->event->location->name }}</p>
         </div>
     </div>

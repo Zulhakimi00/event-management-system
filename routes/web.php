@@ -1,12 +1,14 @@
 <?php
 
+use App\Livewire\AdminDashboard;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use App\Livewire\Bookings;
-use App\Livewire\Calendar;
 use App\Livewire\Dashboard;
 use App\Livewire\EventCreate;
+use App\Livewire\EventManagement;
 use App\Livewire\MealOrdersManagement;
+use App\Livewire\UserBookingCalendar;
 use App\Livewire\UserManagement;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
@@ -21,12 +23,13 @@ Route::view('/', 'welcome');
 Route::get('/login', Login::class)->name('login');
 Route::get('/register', Register::class)->name('register');
 Route::get('/dashboard', Dashboard::class)->name('dashboard');
-Route::get('/calendar', Calendar::class)->name('calendar');
+Route::get('/calendar', UserBookingCalendar::class)->name('calendar');
 Route::get('/booking', Bookings::class)->name('booking');
-Route::get('/admin', function () {})->name('admin');
 Route::get('/user-management', UserManagement::class)->name('user-management');
+Route::get('/event-management', EventManagement::class)->name('event-management');
 Route::get('/create-booking', EventCreate::class)->name('create-booking');
 Route::get('/meal-orders-management', MealOrdersManagement::class)->name('meal-orders-management');
+Route::get('/admin-dashboard', AdminDashboard::class)->name('admin-dashboard');
 
 
 

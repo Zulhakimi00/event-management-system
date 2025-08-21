@@ -9,11 +9,14 @@ class Event extends Model
     protected $fillable = [
         'name',
         'department_id',
-        'start_date_time',
-        'end_date_time',
+        'date',
+        'start_time',
+        'end_time',
+        'event_type_id',
         'location_id',
         'status',
         'contact_no',
+        'user_id',
     ];
     protected $casts = [
         'start_date' => 'datetime',
@@ -42,5 +45,9 @@ class Event extends Model
     public function meals()
     {
         return $this->hasOne(EventMeal::class, 'event_id');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

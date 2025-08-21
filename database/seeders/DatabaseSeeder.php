@@ -125,7 +125,7 @@ class DatabaseSeeder extends Seeder
             ServingMethod::firstOrCreate(['name' => $method]);
         }
 
-        $equipments = ['Projector', 'Microphone', 'Speaker System', 'Laptop'];
+        $equipments = ['Online Setup', 'PA System', 'Laptop'];
         foreach ($equipments as $eq) {
             ItEquipment::firstOrCreate(['name' => $eq]);
         }
@@ -147,17 +147,23 @@ class DatabaseSeeder extends Seeder
         $allEquipments   = ItEquipment::all();
         $allGuests       = SpecialGuest::all();
         $allServing      = ServingMethod::all();
-        $mealSessions = \App\Models\MealSession::all();
+        $mealSessions    = \App\Models\MealSession::all();
+        $allUsers        = \App\Models\User::all(); // ambil semua user
+
         for ($i = 1; $i <= 3; $i++) {
+            $date = now()->addDays($i)->format('Y-m-d');
+
             $event = \App\Models\Event::create([
                 'name'          => "Event $i",
                 'department_id' => $allDepartments->random()->id,
                 'event_type_id' => $allEventType->random()->id,
-                'start_date_time' => now()->addDays($i)->setTime(9, 0),
-                'end_date_time'   => now()->addDays($i)->setTime(17, 0),
+                'date'          => $date,
+                'start_time'    => '09:00:00',
+                'end_time'      => '17:00:00',
                 'location_id'   => $allLocations->random()->id,
-                'status'         => rand(0, 2), // contoh 0=pending,1=confirmed,2=completed
-                'contact_no'     => $faker->phoneNumber(),
+                'status'        => rand(0, 2), // contoh 0=pending,1=confirmed,2=completed
+                'contact_no'    => $faker->phoneNumber(),
+                'user_id'       => $allUsers->random()->id, // simpan user yang request
             ]);
 
             // kalau ada meal (contoh selain event pertama)
@@ -177,7 +183,7 @@ class DatabaseSeeder extends Seeder
                         'event_meal_id'   => $eventMeal->id,
                         'meal_session_id' => $session->id,
                         'time'            => $faker->time('H:i'),
-                        'remark'          => $faker->sentence(), // request makanan
+                        'remark'          => $faker->sentence(),
                     ]);
                 }
             }
