@@ -5,14 +5,14 @@
                 <i class="fas fa-clipboard-list text-blue-600 mr-4"></i>My Bookings
             </h2>
             <div class="flex space-x-4">
-                <button wire:click="exportPDF"
+                {{-- <button wire:click="exportPDF"
                     class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center">
                     <i class="fas fa-file-pdf mr-2"></i>Export PDF
                 </button>
                 <button wire:click="addToCalendar"
                     class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center">
                     <i class="fas fa-calendar-plus mr-2"></i>Add to Calendar
-                </button>
+                </button> --}}
             </div>
         </div>
 
@@ -157,10 +157,10 @@
                                     <i class="fas fa-edit mr-1"></i>Edit Booking
                                 </button>
                             @endif
-                            <button
+                            <a href="{{ route('booking.pdf', $event->id) }}"
                                 class="bg-gray-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-gray-700 flex items-center">
                                 <i class="fas fa-print mr-1"></i>Print
-                            </button>
+                            </a>
                             <button
                                 class="bg-green-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-700 flex items-center">
                                 <i class="fas fa-calendar-plus mr-1"></i>Add to Calendar

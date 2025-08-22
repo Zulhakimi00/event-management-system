@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookingController;
 use App\Livewire\AdminDashboard;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
@@ -14,7 +15,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'welcome');
+
+Route::get('/', function () {
+    return redirect()->route('login');
+});
 
 // Route::view('dashboard', 'dashboard')
 //     ->middleware(['auth', 'verified'])
@@ -30,6 +34,7 @@ Route::get('/event-management', EventManagement::class)->name('event-management'
 Route::get('/create-booking', EventCreate::class)->name('create-booking');
 Route::get('/meal-orders-management', MealOrdersManagement::class)->name('meal-orders-management');
 Route::get('/admin-dashboard', AdminDashboard::class)->name('admin-dashboard');
+Route::get('/booking/{id}/pdf', [BookingController::class, 'generatePdf'])->name('booking.pdf');
 
 
 

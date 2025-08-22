@@ -58,20 +58,14 @@
         </form>
 
         <div class="mt-6 text-center">
-            <p class="text-gray-500 text-sm font-medium">🚀 Demo Credentials:</p>
-            <div class="mt-3 text-xs text-gray-400 space-y-1">
-                <p><span class="font-semibold">Staff:</span> staff/staff123</p>
-                <p><span class="font-semibold">Dietary:</span> dietary/diet123</p>
-                <p><span class="font-semibold">Admin:</span> admin/admin123</p>
-                <p><span class="font-semibold">IT Admin:</span> itadmin/it123</p>
-            </div>
+
 
             <div class="mt-4 pt-4 border-t border-gray-200">
                 <p class="text-gray-600 text-sm mb-2">New Staff Member?</p>
-                <button wire:click="$emit('showRegister')"
+                <a href="{{ route('register') }}"
                     class="text-blue-600 hover:text-blue-800 text-sm font-medium underline">
                     Register Here
-                </button>
+                </a>
             </div>
         </div>
     </div>
